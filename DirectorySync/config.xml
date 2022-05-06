@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="IBM437"?>
+<ArrayOfSyncObject xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SyncObject>
+    <name>TestSync</name>
+    <direction>Download</direction>
+    <localProvider>
+      <path>C:\Testumgebung\Tunnel_Frankenhain</path>
+      <syncFilter>
+        <AttributeExcludeMask />
+        <FileNameExcludes></FileNameExcludes>
+        <FileNameIncludes></FileNameIncludes>
+        <SubdirectoryExcludes />
+      </syncFilter>
+      <syncOptions>
+        <None>false</None>
+        <CompareFileStreams>false</CompareFileStreams>
+        <ExplicitDetectChanges>false</ExplicitDetectChanges>
+        <RecycleConflictLoserFiles>false</RecycleConflictLoserFiles>
+        <RecycleDeletedFiles>false</RecycleDeletedFiles>
+        <RecyclePreviousFileOnUpdates>false</RecyclePreviousFileOnUpdates>
+      </syncOptions>
+    </localProvider>
+    <remoteProvider>
+      <path>\\data\Projekte\__Projekte Tunnel\_Proj. Tunnel Frankenhain A49 (3.2019)\Dokumentation\_02_Stationsdaten</path>
+      <syncFilter>
+        <AttributeExcludeMask />
+        <FileNameExcludes />
+        <FileNameIncludes>*.pdf, *.xls</FileNameIncludes>
+        <SubdirectoryExcludes />
+      </syncFilter>
+      <syncOptions>
+        <None>false</None>
+        <CompareFileStreams>false</CompareFileStreams>
+        <ExplicitDetectChanges>false</ExplicitDetectChanges>
+        <RecycleConflictLoserFiles>false</RecycleConflictLoserFiles>
+        <RecycleDeletedFiles>false</RecycleDeletedFiles>
+        <RecyclePreviousFileOnUpdates>false</RecyclePreviousFileOnUpdates>
+      </syncOptions>
+    </remoteProvider>
+  </SyncObject>
+</ArrayOfSyncObject>

@@ -1,0 +1,14 @@
+C:\Arbeitsordner\DirectorySync\DirectorySync\obj\Debug\DirectorySync.csprojAssemblyReference.cache
+C:\Arbeitsordner\DirectorySync\DirectorySync\obj\Debug\DirectorySync.csproj.CoreCompileInputs.cache
+C:\Arbeitsordner\DirectorySync\DirectorySync\bin\Debug\DirectorySync.exe.config
+C:\Arbeitsordner\DirectorySync\DirectorySync\bin\Debug\DirectorySync.exe
+C:\Arbeitsordner\DirectorySync\DirectorySync\bin\Debug\DirectorySync.pdb
+C:\Arbeitsordner\DirectorySync\DirectorySync\bin\Debug\Microsoft.Synchronization.dll
+C:\Arbeitsordner\DirectorySync\DirectorySync\bin\Debug\Microsoft.Synchronization.Files.dll
+C:\Arbeitsordner\DirectorySync\DirectorySync\bin\Debug\Microsoft.Synchronization.MetadataStorage.dll
+C:\Arbeitsordner\DirectorySync\DirectorySync\bin\Debug\de\Microsoft.Synchronization.resources.dll
+C:\Arbeitsordner\DirectorySync\DirectorySync\bin\Debug\de\Microsoft.Synchronization.Files.resources.dll
+C:\Arbeitsordner\DirectorySync\DirectorySync\bin\Debug\de\Microsoft.Synchronization.MetadataStorage.resources.dll
+C:\Arbeitsordner\DirectorySync\DirectorySync\obj\Debug\DirectorySync.csproj.CopyComplete
+C:\Arbeitsordner\DirectorySync\DirectorySync\obj\Debug\DirectorySync.exe
+C:\Arbeitsordner\DirectorySync\DirectorySync\obj\Debug\DirectorySync.pdb
