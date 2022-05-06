@@ -17,23 +17,28 @@ namespace DirectorySync
         static void Main(string[] args)
         {
             bool debug = false;
-            // default parameter "../../config.xml"
-            if (args.Length == 1)
+            string configFile = null;
+
+            if (args.Length == 0)
+            {
+                configFile = "./config.xml";
+            }
+            else if (args.Length == 1)
             {
                 if (args[0] == "-h" | args[0] == "--help")
                 {
                     Console.Write(
-                        "The directorySync programm will sync the in local and remote provider configured\r\n" + 
-                        "folders corresponding on the sync filter and sync options once the program is executed (manual sync)\r\n\r\n" + 
+                        "The directorySync programm will sync the in local and remote provider configured\r\n" +
+                        "folders corresponding on the sync filter and sync options once the program is executed (manual sync)\r\n\r\n" +
                         "-h, --help                             | Show command options\r\n" +
                         "-o, --option                           | Show parameter options\r\n" +
                         "-e, --example                          | Show config.xml example\r\n" +
-                        "-d, --debug   (before config)          | Show used config.xml content befor sync"
+                        "-d, --debug                            | Show debug information"
                         );
                     Console.ReadKey();
                     Environment.Exit(0);
                 }
-                if (args[0] == "-o" | args[0] == "--option")
+                else if (args[0] == "-o" | args[0] == "--option")
                 {
                     Console.Write(
                         "[direction]\r\n" +
@@ -46,7 +51,7 @@ namespace DirectorySync
                         "[path]                                 | folder to sync\r\n" +
                         "\r\n" +
                         "[syncFilter]                           | FileSyncScopeFilter\r\n" +
-                        "   [AttributeExcludeMask]              | comma seperated list of attributes that are used\r\n" + 
+                        "   [AttributeExcludeMask]              | comma seperated list of attributes that are used\r\n" +
                         "       Archive                           to exclude files and folders from the scope\r\n" +
                         "       Compressed\r\n" +
                         "       Device\r\n" +
@@ -69,7 +74,7 @@ namespace DirectorySync
                         "   [SubdirectoryExcludes]              - comma seperated list of relative paths to exclude from the scope\r\n\r\n" +
                         "[syncOptions]                          - FileSyncOptions [true/false]\r\n" +
                         "   None                                - If this value is set, the provider will use its default configuration options.\r\n" +
-                        "                                         Setting any of the other flags overrides this setting. This is the default\r\n" + 
+                        "                                         Setting any of the other flags overrides this setting. This is the default\r\n" +
                         "                                         setting. \r\n" +
                         "   CompareFileStreams                  - If this value is set, the provider will compute a hash value for each file\r\n" +
                         "                                         that is based on the contents of the whole file stream and use this value to\r\n" +
@@ -77,25 +82,25 @@ namespace DirectorySync
                         "                                         synchronization, but provides more robust change detection. If this value is\r\n" +
                         "                                         not set, an algorithm that compares modification times, file sizes, file names,\r\n" +
                         "                                         and file attributes will be used to determine whether a file has changed. \r\n" +
-                        "   ExplicitDetectChanges               - If this value is set, the provider will perform change detection only when\r\n" + 
+                        "   ExplicitDetectChanges               - If this value is set, the provider will perform change detection only when\r\n" +
                         "                                         DetectChanges is called. If this value is not set, change detection is\r\n" +
                         "                                         implicitly done on the first call to the provider's GetChangeBatch or Process-\r\n" +
-                        "                                         ChangeBatch method.\r\n" + 
+                        "                                         ChangeBatch method.\r\n" +
                         "   RecycleConflictLoserFiles           - If this value is set, the provider will move files that are conflict losers to\r\n" +
                         "                                         the recycle bin. If this value is not set, the provider will move the files to\r\n" +
                         "                                         a specified location. Or, if no location is specified, the files will be\r\n" +
                         "                                         permanently deleted. \r\n" +
-                        "   RecycleDeletedFiles                 - If this value is set, the provider will move files deleted during change\r\n" + 
-                        "                                         application to the recycle bin. If this value is not set, files will be\r\n" + 
+                        "   RecycleDeletedFiles                 - If this value is set, the provider will move files deleted during change\r\n" +
+                        "                                         application to the recycle bin. If this value is not set, files will be\r\n" +
                         "                                         permanently deleted. \r\n" +
-                        "   RecyclePreviousFileOnUpdates        - If this value is set, the provider will move files overwritten during change\r\n" + 
-                        "                                         application to the recycle bin. If this value is not set, files will be over-\r\n" + 
+                        "   RecyclePreviousFileOnUpdates        - If this value is set, the provider will move files overwritten during change\r\n" +
+                        "                                         application to the recycle bin. If this value is not set, files will be over-\r\n" +
                         "                                         written in place and any data in the old file will be lost. \r\n"
                         );
                     Console.ReadKey();
                     Environment.Exit(0);
                 }
-                if (args[0] == "-e" | args[0] == "--example")
+                else if (args[0] == "-e" | args[0] == "--example")
                 {
                     Console.Write(
                         "<?xml version=\"1.0\" encoding=\"IBM437\"?>" +
@@ -143,27 +148,39 @@ namespace DirectorySync
                     Console.ReadKey();
                     Environment.Exit(0);
                 }
+                else if (args[0] == "-d" || args[0] == "--debug")
+                {
+                    configFile = "./config.xml";
+                    debug = true;
+                    Console.WriteLine("debug enabled");
+                }
+                else
+                {
+                    configFile = args[0];
+                }
             }
-            else if(args[0] != "-d" && args[0] != "--debug")
+            else if (args.Length == 2 && (args[1] == "-d" || args[1] == "--debug"))
             {
-                Console.WriteLine("invalid parameters");
+                configFile = args[0];
+                debug = true;
+                Console.WriteLine("debug enabled");
+            }
+            else
+            {
+                Console.WriteLine("invalid parameter");
                 Console.ReadKey();
                 Environment.Exit(0);
             }
-            else
-            {
-                
-            }
 
-            string configFile;
-            if (args[0] == "-d" || args[0] == "--debug")
-            {
-                configFile = args[1];
-                debug = true;
+            if (File.Exists(configFile)){
+                Console.WriteLine($"using config-file: {configFile}");
             }
             else
-                configFile = args[0];
-
+            {
+                Console.WriteLine("config file doesnt excist");
+                Console.ReadKey();
+                Environment.Exit(0);
+            }
 
             // Konfiguration einlesen
             List<SyncObject> syncObjects = new List<SyncObject>();
@@ -176,8 +193,14 @@ namespace DirectorySync
 
             if(debug)
             {
+                Console.WriteLine("--------------------------------------------------");
+                Console.WriteLine("                 Config file");
+                Console.WriteLine("--------------------------------------------------");
                 serializer.Serialize(Console.Out, syncObjects);
                 Console.ReadKey();
+                Console.WriteLine("\r\n\r\n--------------------------------------------------");
+                Console.WriteLine("               Configiguration");
+                Console.WriteLine("--------------------------------------------------");
             }
 
             //////////////////////////////
@@ -294,7 +317,7 @@ namespace DirectorySync
                 if(s.localProvider.syncFilter.FileNameIncludes != null && s.localProvider.syncFilter.FileNameIncludes != "")
                 {
                     List<string> fileNameIncludesList = new List<string>();
-                    fileNameIncludesList = s.localProvider.syncFilter.FileNameIncludes .Split(',').ToList();
+                    fileNameIncludesList = s.localProvider.syncFilter.FileNameIncludes.Split(',').ToList();
                     foreach (string st in fileNameIncludesList)
                     {
                         syncFilterLocal.FileNameIncludes.Add(st);
@@ -308,7 +331,7 @@ namespace DirectorySync
                     subDirectoryExcludesList = s.localProvider.syncFilter.SubdirectoryExcludes.Split(',').ToList();
                     foreach (string st in subDirectoryExcludesList)
                     {
-                        syncFilterLocal.FileNameIncludes.Add(st);
+                        syncFilterLocal.SubdirectoryExcludes.Add(st);
                     }
                 }
 
@@ -320,7 +343,8 @@ namespace DirectorySync
                     attributeExcludeMaskList = s.remoteProvider.syncFilter.AttributeExcludeMask.Split(',').ToList();
                     foreach (string st in attributeExcludeMaskList)
                     {
-                        switch (st)
+                        string stng = st.Trim();
+                        switch (stng)
                         {
                             case "Archive":
                                 syncFilterRemote.AttributeExcludeMask |= FileAttributes.Archive;
@@ -398,7 +422,7 @@ namespace DirectorySync
                     subDirectoryExcludesList = s.remoteProvider.syncFilter.SubdirectoryExcludes.Split(',').ToList();
                     foreach (string st in subDirectoryExcludesList)
                     {
-                        syncFilterRemote.FileNameIncludes.Add(st);
+                        syncFilterRemote.SubdirectoryExcludes.Add(st);
                     }
                 }
 
@@ -459,19 +483,57 @@ namespace DirectorySync
                 if (File.Exists(s.localProvider.path + "\\filesync-source.metadata"))
                     File.Copy(s.localProvider.path + "\\filesync-source.metadata", s.remoteProvider.path + "\\filesync.metadata", true);
 
+                if (debug)
+                {
+                    Console.WriteLine($"SyncObjectName                   : {s.name}");
+                    Console.WriteLine($"LocalProvider");
+                    Console.WriteLine($"  Path                           : {s.localProvider.path}");
+                    Console.WriteLine($"  SyncFilter");
+                    string tmpStr1;
+                    string tmpStr2;
+                    tmpStr1 = syncFilterLocal.AttributeExcludeMask.ToString();
+                    tmpStr2 = syncFilterRemote.AttributeExcludeMask.ToString();
+                    if (tmpStr1 == "0")
+                        tmpStr1= "";
+                    if (tmpStr2 == "0")
+                        tmpStr2 = "";
 
-                Console.WriteLine($"SyncObjectName : {s.name}");
-                Console.WriteLine($"LocalProvider");
-                Console.WriteLine($"  Path          : {s.localProvider.path}");
-                Console.WriteLine($"  SyncFilter    : {s.localProvider.syncFilter}");
-                Console.WriteLine($"  SyncOptions   : {s.localProvider.syncOptions}");
-                Console.WriteLine($"RemoteProvider");
-                Console.WriteLine($"  Path          : {s.remoteProvider.path}");
-                Console.WriteLine($"  SyncFilter    : {s.remoteProvider.syncFilter}");
-                Console.WriteLine($"  SyncOptions   : {s.remoteProvider.syncOptions}");
-                Console.WriteLine($"Direction       : {s.direction}");
-                Console.WriteLine("--------------------------------------------------");
-
+                    Console.WriteLine($"    AttributeExcludeMask         : {tmpStr1}");
+                    Console.WriteLine($"    FileNameExcludes             : {String.Join(", ", syncFilterLocal.FileNameExcludes)}");
+                    Console.WriteLine($"    FileNameIncludes             : {String.Join(", ", syncFilterLocal.FileNameIncludes)}");
+                    Console.WriteLine($"    SubdirectoryExcludes         : {String.Join(", ", syncFilterLocal.SubdirectoryExcludes)}");
+                    Console.WriteLine($"  SyncOptions");
+                    Console.WriteLine($"    None                         : {s.localProvider.syncOptions.None}");
+                    Console.WriteLine($"    CompareFileStreams           : {s.localProvider.syncOptions.CompareFileStreams}");
+                    Console.WriteLine($"    ExplicitDetectChanges        : {s.localProvider.syncOptions.ExplicitDetectChanges}");
+                    Console.WriteLine($"    RecycleConflictLoserFiles    : {s.localProvider.syncOptions.RecycleConflictLoserFiles}");
+                    Console.WriteLine($"    RecycleDeletedFiles          : {s.localProvider.syncOptions.RecycleDeletedFiles}");
+                    Console.WriteLine($"    RecyclePreviousFileOnUpdates : {s.localProvider.syncOptions.RecyclePreviousFileOnUpdates}");
+                    Console.WriteLine($"RemoteProvider");
+                    Console.WriteLine($"  Path          : {s.remoteProvider.path}");
+                    Console.WriteLine($"  SyncFilter");
+                    Console.WriteLine($"    AttributeExcludeMask         : {tmpStr2}");
+                    Console.WriteLine($"    FileNameExcludes             : {String.Join(", ", syncFilterRemote.FileNameExcludes)}");
+                    Console.WriteLine($"    FileNameIncludes             : {String.Join(", ", syncFilterRemote.FileNameIncludes)}");
+                    Console.WriteLine($"    SubdirectoryExcludes         : {String.Join(", ", syncFilterRemote.SubdirectoryExcludes)}");
+                    Console.WriteLine($"  SyncOptions");
+                    Console.WriteLine($"    None                         : {s.remoteProvider.syncOptions.None}");
+                    Console.WriteLine($"    CompareFileStreams           : {s.remoteProvider.syncOptions.CompareFileStreams}");
+                    Console.WriteLine($"    ExplicitDetectChanges        : {s.remoteProvider.syncOptions.ExplicitDetectChanges}");
+                    Console.WriteLine($"    RecycleConflictLoserFiles    : {s.remoteProvider.syncOptions.RecycleConflictLoserFiles}");
+                    Console.WriteLine($"    RecycleDeletedFiles          : {s.remoteProvider.syncOptions.RecycleDeletedFiles}");
+                    Console.WriteLine($"    RecyclePreviousFileOnUpdates : {s.remoteProvider.syncOptions.RecyclePreviousFileOnUpdates}");
+                    Console.WriteLine($"Direction       : {s.direction}");
+                    Console.WriteLine("--------------------------------------------------");
+                }
+                else
+                {
+                    Console.WriteLine($"SyncObjectName : {s.name}");
+                    Console.WriteLine($"LocalPath      : {s.localProvider.path}");
+                    Console.WriteLine($"RemotePath     : {s.remoteProvider.path}");
+                    Console.WriteLine($"Direction      : {s.direction}");
+                    Console.WriteLine("--------------------------------------------------");
+                }
                 string msg;
 
                 // FileSyncProvider kann erst nach setzen der syncFilter/syncOption erstellt werden
